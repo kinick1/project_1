@@ -1,39 +1,48 @@
-package kr.ac.wku.project_1
-
-import androidx.appcompat.app.AppCompatActivity
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
-import kr.ac.wku.project_1.data.product
-import kr.ac.wku.project_1.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import kr.ac.wku.project_1.R
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var edtPurchaseDate: EditText
+    private lateinit var edtExpirationDate: EditText
 
-    lateinit var binding: ActivityMainBinding
-
-    private lateinit var editTextProductName: EditText
-    private lateinit var editTextPurchaseDate: EditText
-    private lateinit var editTextExpirationDate: EditText
-    private lateinit var buttonSave: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        editTextProductName = findViewById(R.id.edtProductName)
-        editTextPurchaseDate = findViewById(R.id.edtPurchaseDate)
-        editTextExpirationDate = findViewById(R.id.edtExpirationDate)
-        buttonSave = findViewById(R.id.btnSave)
-
-        buttonSave.setOnClickListener {
-            saveProduct()
-        }
+        edtPurchaseDate = findViewById(R.id.edtPurchaseDate)
+        edtExpirationDate = findViewById(R.id.edtExpirationDate)
     }
-        private fun saveProduct() {
-            val productName = editTextProductName.text.toString()
-            val purchaseDate = editTextPurchaseDate.text.toString()
-            val expirationDate = editTextExpirationDate.text.toString()
 
-            val product = product(productName, purchaseDate, expirationDate)
-        }
+    fun showPurchaseDatePicker(view: View) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+            edtPurchaseDate.setText(formattedDate)
+        }, year, month, day)
+
+        datePickerDialog.show()
+    }
+
+    fun showExpirationDatePicker(view: View) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val formattedDate = String.format("%d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+            edtExpirationDate.setText(formattedDate)
+        }, year, month, day)
+
+        datePickerDialog.show()
+    }
 }
